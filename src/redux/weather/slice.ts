@@ -5,6 +5,7 @@ type WeatherState = {
   current: {
     temperature: number;
     windspeed: number;
+    time: string;
   } | null;
   loading: boolean;
   error: string | null;

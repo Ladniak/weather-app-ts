@@ -2,20 +2,16 @@ import { createSlice } from "@reduxjs/toolkit";
 import { fetchWeatherByCity } from "./operations";
 
 type WeatherByCityState = {
-  current: {
-    temperature: number;
-    windspeed: number;
-    winddirection: number;
-    weathercode: number;
-    is_day: number;
-    time: string;
+  coordinates: {
+    latitude: number;
+    longitude: number;
   } | null;
   loading: boolean;
   error: string | null;
 };
 
 const initialState: WeatherByCityState = {
-  current: null,
+  coordinates: null,
   loading: false,
   error: null,
 };
@@ -32,7 +28,7 @@ const weatherByCitySlice = createSlice({
       })
       .addCase(fetchWeatherByCity.fulfilled, (state, action) => {
         state.loading = false;
-        state.current = action.payload;
+        state.coordinates = action.payload;
       })
       .addCase(fetchWeatherByCity.rejected, (state, action) => {
         state.loading = false;

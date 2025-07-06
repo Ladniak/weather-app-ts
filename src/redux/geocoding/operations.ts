@@ -1,11 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchWeatherByCity = createAsyncThunk(
-  "weather/fetchWeatherByCity",
+  "geocoding/fetchWeatherByCity",
   async (cityName: string, { rejectWithValue }) => {
     try {
       const geoRes = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}`
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+          cityName
+        )}`
       );
       const geoData = await geoRes.json();
 
@@ -15,14 +17,10 @@ export const fetchWeatherByCity = createAsyncThunk(
 
       const { latitude, longitude } = geoData.results[0];
 
-      const weatherRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
-      );
-      const weatherData = await weatherRes.json();
-
-      return weatherData.current_weather;
-    } catch (err) {
-      return rejectWithValue(err.message || "Failed to fetch weather");
+      // Повертаємо тільки координати
+      return { latitude, longitude };
+    } catch (err: any) {
+      return rejectWithValue(err.message || "Failed to fetch coordinates");
     }
   }
 );

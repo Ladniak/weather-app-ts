@@ -1,25 +1,39 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import type { AppDispatch } from "../../redux/store";
 import { fetchWeatherByCity } from "../../redux/geocoding/operations";
-import { useEffect } from "react";
-import { selectWeatherByCity } from "../../redux/geocoding/selectors";
+import { useState, type ChangeEvent } from "react";
+import { selectCoordinates } from "../../redux/geocoding/selectors";
+import { useNavigate } from "react-router-dom";
 
 const SearchForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const selector = useSelector(selectWeatherByCity);
+  const coord = useSelector(selectCoordinates);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(fetchWeatherByCity("Netishyn"));
-  }, [dispatch]);
+  const [city, setCity] = useState<string>("");
 
-  console.log(selector);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setCity(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (city != "") {
+      dispatch(fetchWeatherByCity(city));
+    } else {
+      console.log("Enter some city!");
+    }
+  };
+
+  if (coord != null) {
+    navigate(`/weather?lat=${coord.latitude}&lon=${coord.longitude}`);
+  }
 
   return (
-    <div>
-      <input type="text" />
-      <Link to="/weather">Search</Link>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input type="text" value={city} onChange={handleChange} />
+      <button type="submit">Search</button>
+    </form>
   );
 };
 
