@@ -23,6 +23,8 @@ const HomePage = () => {
     ? new Date(selector.time + "Z").toLocaleDateString()
     : "";
 
+  console.log(selector);
+
   return (
     <div className="flex justify-center ">
       <div className="rounded-lg py-6 pl-8 pr-32 bg-blue-400 opacity-90 text-white">
