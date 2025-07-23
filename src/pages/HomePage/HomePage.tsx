@@ -24,12 +24,21 @@ const HomePage = () => {
     : "";
 
   return (
-    <div>
-      <p>{selector?.temperature}</p>
-      <p>{selector?.windspeed}</p>
-      <p>{formattedDate}</p>
+    <div className="flex justify-center ">
+      <div className="rounded-lg py-6 pl-8 pr-32 bg-blue-400 opacity-90 text-white">
+        Block1
+      </div>
+      <div className="lg:my-3 bg-gray-800 text-white p-8 lg:rounded-r-lg">
+        Block2
+      </div>
     </div>
   );
 };
 
 export default HomePage;
+
+{
+  /* <p>{selector?.temperature}</p>
+<p>{selector?.windspeed}</p>
+<p>{formattedDate}</p> */
+}
