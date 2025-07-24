@@ -1,17 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchWeatherByCity } from "./operations";
+import { fetchCityNameByCoords, fetchWeatherByCity } from "./operations";
 
 type WeatherByCityState = {
   coordinates: {
     latitude: number;
     longitude: number;
   } | null;
+  cityName: string | null;
   loading: boolean;
   error: string | null;
 };
 
 const initialState: WeatherByCityState = {
   coordinates: null,
+  cityName: null,
   loading: false,
   error: null,
 };
@@ -33,6 +35,13 @@ const weatherByCitySlice = createSlice({
       .addCase(fetchWeatherByCity.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "Something went wrong";
+      })
+      .addCase(fetchCityNameByCoords.fulfilled, (state, action) => {
+        state.cityName = action.payload;
+      })
+      .addCase(fetchCityNameByCoords.rejected, (state, action) => {
+        state.cityName = null;
+        state.error = action.payload as string;
       });
   },
 });

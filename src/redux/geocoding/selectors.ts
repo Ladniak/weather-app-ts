@@ -6,3 +6,5 @@ export const selectWeatherLoading = (state: RootState) =>
   state.weatherByCity.loading;
 export const selectWeatherError = (state: RootState) =>
   state.weatherByCity.error;
+export const selectCityName = (state: RootState) =>
+  state.weatherByCity.cityName;
