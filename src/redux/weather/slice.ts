@@ -5,6 +5,7 @@ type WeatherState = {
   current: {
     temperature: number;
     windspeed: number;
+    weathercode: number | null;
     time: string;
   } | null;
   daily: {

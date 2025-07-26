@@ -2,16 +2,26 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWeather } from "../../redux/weather/operations";
 import type { AppDispatch } from "../../redux/store";
-import { selectWeatherCurrent } from "../../redux/weather/selectors";
+import {
+  selectWeatherCode,
+  selectWeatherCurrent,
+} from "../../redux/weather/selectors";
 import { useSearchParams } from "react-router-dom";
 import { selectCityName } from "../../redux/geocoding/selectors";
 import { fetchCityNameByCoords } from "../../redux/geocoding/operations";
+
+import { WeatherIcon } from "../../components/WeatherIcon/WeatherIcon";
+import { getIconIdFromWeatherCode } from "../../utils/getIconIdFromWeatherCode";
 
 const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const selector = useSelector(selectWeatherCurrent);
   const [searchParams] = useSearchParams();
   const cityName = useSelector(selectCityName);
+  const selectorTime = selector?.time ?? "";
+
+  const weatherCode = selectWeatherCode;
+  const iconId = getIconIdFromWeatherCode(weatherCode);
 
   const lat = Number(searchParams.get("lat"));
   const lon = Number(searchParams.get("lon"));
@@ -22,10 +32,6 @@ const HomePage = () => {
       dispatch(fetchCityNameByCoords({ latitude: lat, longitude: lon }));
     }
   }, [dispatch, lat, lon]);
-
-  // const formattedDate = selector?.time
-  //   ? new Date(selector.time + "Z").toLocaleDateString()
-  //   : "";
 
   const formatWeatherDate = (
     timeStr: string
@@ -45,18 +51,17 @@ const HomePage = () => {
     return { dayName, dateStr };
   };
 
-  const selectorTime = selector?.time ?? "";
   const { dayName, dateStr } = formatWeatherDate(selectorTime);
 
-  console.log(dateStr, dayName);
+  console.log(selector);
 
   return (
     <div className="flex justify-center min-h-screen items-center">
       <div className="flex justify-center min-w-full ">
-        <div className="rounded-lg py-6 pl-8 pr-32 bg-blue-400 opacity-90 text-white">
+        <div className="flex flex-col rounded-lg py-6 pl-8 pr-32 bg-blue-400 opacity-90 text-white gap-20">
           <div>
-            <h1 className="text-5xl font-bold">{dayName}</h1>
-            <p>{dateStr}</p>
+            <h1 className="text-4xl font-bold">{dayName}</h1>
+            <p className="flex pl-1">{dateStr}</p>
             <p className="flex items-center">
               <svg
                 className="h-5"
@@ -84,6 +89,10 @@ const HomePage = () => {
               </svg>{" "}
               <span className="text-gray-100">{cityName}</span>
             </p>
+          </div>
+          <div>
+            temperature
+            <WeatherIcon iconId={iconId} size={64} />
           </div>
         </div>
         <div className="lg:my-3 bg-gray-800 text-white p-8 lg:rounded-r-lg">

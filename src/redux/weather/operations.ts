@@ -16,6 +16,7 @@ export const fetchWeather = createAsyncThunk(
       current: data.current_weather,
       daily: data.daily,
       hourly: data.hourly,
+      weathercode: data.weathercode,
     };
   }
 );
