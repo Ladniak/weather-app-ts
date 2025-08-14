@@ -5,8 +5,8 @@ type WeatherIconProps = {
 
 export const WeatherIcon = ({ iconId }: { iconId: string }) => {
   return (
-    <svg width="48" height="48">
-      <use xlinkHref={`/sprite.svg#${iconId}`} />
+    <svg width="120" height="120">
+      <use href={`/sprite.svg#${iconId}`} fill="white" />
     </svg>
   );
 };

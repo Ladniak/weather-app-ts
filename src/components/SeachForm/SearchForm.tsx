@@ -4,6 +4,7 @@ import { fetchWeatherByCity } from "../../redux/geocoding/operations";
 import { useState, type ChangeEvent } from "react";
 import { selectCoordinates } from "../../redux/geocoding/selectors";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const SearchForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,9 +26,11 @@ const SearchForm = () => {
     }
   };
 
-  if (coord != null) {
-    navigate(`/weather?lat=${coord.latitude}&lon=${coord.longitude}`);
-  }
+  useEffect(() => {
+    if (coord != null) {
+      navigate(`/weather?lat=${coord.latitude}&lon=${coord.longitude}`);
+    }
+  }, [coord, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-600">

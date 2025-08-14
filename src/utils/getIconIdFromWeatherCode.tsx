@@ -1,11 +1,11 @@
-// utils/getIconIdFromWeatherCode.ts
-
 export const getIconIdFromWeatherCode = (code: number): string => {
   switch (true) {
     case code === 0:
       return "sun"; // ☀️ Ясне небо
-    case code >= 1 && code <= 3:
-      return "cloud-sun"; // 🌤 Мінлива хмарність
+    case code === 1:
+      return "cloud-sun"; // 🌤 Частково хмарно
+    case code === 2 || code === 3:
+      return "cloud"; // ☁️ Хмарно/Похмуро
     case code === 45 || code === 48:
       return "fog"; // 🌫 Туман
     case code >= 51 && code <= 57:

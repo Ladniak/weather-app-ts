@@ -15,16 +15,21 @@ import { getIconIdFromWeatherCode } from "../../utils/getIconIdFromWeatherCode";
 
 const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const selector = useSelector(selectWeatherCurrent);
-  const [searchParams] = useSearchParams();
-  const cityName = useSelector(selectCityName);
-  const selectorTime = selector?.time ?? "";
-
+  const weather = useSelector(selectWeatherCurrent);
   const weatherCode = useSelector(selectWeatherCode);
-  const iconId = getIconIdFromWeatherCode(weatherCode);
+  const cityName = useSelector(selectCityName);
+
+  const [searchParams] = useSearchParams();
 
   const lat = Number(searchParams.get("lat"));
   const lon = Number(searchParams.get("lon"));
+
+  const selectorTime = weather?.time ?? "";
+
+  let iconId = null;
+  if (weatherCode !== null) {
+    iconId = getIconIdFromWeatherCode(weatherCode);
+  }
 
   useEffect(() => {
     if (lat !== null && lon !== null && !isNaN(lat) && !isNaN(lon)) {
@@ -32,6 +37,8 @@ const HomePage = () => {
       dispatch(fetchCityNameByCoords({ latitude: lat, longitude: lon }));
     }
   }, [dispatch, lat, lon]);
+
+  console.log(iconId);
 
   const formatWeatherDate = (
     timeStr: string
@@ -53,7 +60,7 @@ const HomePage = () => {
 
   const { dayName, dateStr } = formatWeatherDate(selectorTime);
 
-  console.log(selector);
+  console.log(weather);
 
   return (
     <div className="flex justify-center min-h-screen items-center">
@@ -91,8 +98,9 @@ const HomePage = () => {
             </p>
           </div>
           <div>
-            <WeatherIcon iconId={iconId} />
-            temperature
+            {iconId !== null && <WeatherIcon iconId={iconId} />}
+            <p className="text-5xl font-bold">{weather?.temperature}°</p>
+            <p></p>
           </div>
         </div>
         <div className="lg:my-3 bg-gray-800 text-white p-8 lg:rounded-r-lg">
@@ -106,7 +114,7 @@ const HomePage = () => {
 export default HomePage;
 
 {
-  /* <p>{selector?.temperature}</p>
+  /*
 <p>{selector?.windspeed}</p>
 <p>{formattedDate}</p> */
 }
