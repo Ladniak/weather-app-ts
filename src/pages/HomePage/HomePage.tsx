@@ -20,7 +20,7 @@ const HomePage = () => {
   const cityName = useSelector(selectCityName);
   const selectorTime = selector?.time ?? "";
 
-  const weatherCode = selectWeatherCode;
+  const weatherCode = useSelector(selectWeatherCode);
   const iconId = getIconIdFromWeatherCode(weatherCode);
 
   const lat = Number(searchParams.get("lat"));
@@ -91,8 +91,8 @@ const HomePage = () => {
             </p>
           </div>
           <div>
+            <WeatherIcon iconId={iconId} />
             temperature
-            <WeatherIcon iconId={iconId} size={64} />
           </div>
         </div>
         <div className="lg:my-3 bg-gray-800 text-white p-8 lg:rounded-r-lg">

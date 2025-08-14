@@ -3,8 +3,10 @@ type WeatherIconProps = {
   size?: number;
 };
 
-export const WeatherIcon = ({ iconId, size = 48 }: WeatherIconProps) => (
-  <svg width={size} height={size}>
-    <use xlinkHref={`#${iconId}`} />
-  </svg>
-);
+export const WeatherIcon = ({ iconId }: { iconId: string }) => {
+  return (
+    <svg width="48" height="48">
+      <use xlinkHref={`/sprite.svg#${iconId}`} />
+    </svg>
+  );
+};

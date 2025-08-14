@@ -1,45 +1,26 @@
-export const selectWeatherIcon = (weatherSelector: number): string => {
+// utils/getIconIdFromWeatherCode.ts
+
+export const getIconIdFromWeatherCode = (code: number): string => {
   switch (true) {
-    case weatherSelector === 0:
+    case code === 0:
       return "sun"; // ☀️ Ясне небо
-
-    case weatherSelector >= 1 && weatherSelector <= 3:
-      return "cloud"; // 🌤 Частково хмарно, хмарно
-
-    case weatherSelector === 45 || weatherSelector === 48:
-      return "fog"; // 🌫 Туман або іній
-
-    case weatherSelector >= 51 && weatherSelector <= 55:
+    case code >= 1 && code <= 3:
+      return "cloud-sun"; // 🌤 Мінлива хмарність
+    case code === 45 || code === 48:
+      return "fog"; // 🌫 Туман
+    case code >= 51 && code <= 57:
       return "drizzle"; // 🌦 Мряка
-
-    case weatherSelector >= 56 && weatherSelector <= 57:
-      return "freezing_drizzle"; // 🌧❄️ Мряка з морозом
-
-    case weatherSelector >= 61 && weatherSelector <= 65:
-      return "rain"; // 🌧 Дощ різної інтенсивності
-
-    case weatherSelector >= 66 && weatherSelector <= 67:
-      return "freezing_rain"; // ❄️🌧 Дощ з морозом
-
-    case weatherSelector >= 71 && weatherSelector <= 75:
-      return "snow"; // 🌨 Сніг
-
-    case weatherSelector === 77:
-      return "snow_grains"; // 🌨 Маленькі сніжинки
-
-    case weatherSelector >= 80 && weatherSelector <= 82:
-      return "rain_showers"; // 🌦 Зливи
-
-    case weatherSelector === 85 || weatherSelector === 86:
-      return "snow_showers"; // 🌨 Короткі снігові зливи
-
-    case weatherSelector === 95:
-      return "thunderstorm"; // ⛈ Гроза без граду
-
-    case weatherSelector === 96 || weatherSelector === 99:
-      return "thunderstorm_hail"; // ⛈❄️ Гроза з градом
-
+    case code >= 61 && code <= 67:
+      return "rain"; // 🌧 Дощ
+    case code >= 71 && code <= 77:
+      return "snow"; // ❄️ Сніг
+    case code >= 80 && code <= 82:
+      return "showers"; // 🌦 Зливи
+    case code >= 85 && code <= 86:
+      return "snow-showers"; // 🌨 Снігопад
+    case code >= 95 && code <= 99:
+      return "thunder"; // ⛈ Гроза
     default:
-      return "unknown";
+      return "unknown"; // Не відомо
   }
 };
