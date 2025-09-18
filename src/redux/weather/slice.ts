@@ -13,21 +13,20 @@ type WeatherState = {
     temperature_2m_max: number[];
     temperature_2m_min: number[];
     weathercode: number[];
-  } | null;
-  hourly: {
-    time: string[];
-    relative_humidity_2m: number[];
-    precipitation: number[];
-    windspeed_10m: number[];
+    precipitation_sum: number[];
+    windspeed_10m_max: number[];
+    relative_humidity_2m_max: number[];
+    relative_humidity_2m_min: number[];
+    relative_humidity_2m_avg: number[];
   } | null;
   loading: boolean;
   error: string | null;
 };
 
+
 const initialState: WeatherState = {
   current: null,
   daily: null,
-  hourly: null,
   loading: false,
   error: null,
 };
@@ -42,11 +41,23 @@ const weatherSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchWeather.fulfilled, (state, action) => {
+      builder.addCase(fetchWeather.fulfilled, (state, action) => {
         state.loading = false;
         state.current = action.payload.current;
-        state.daily = action.payload.daily;
-        state.hourly = action.payload.hourly;
+
+        if (action.payload.daily) {
+          const daily = action.payload.daily;
+          const relative_humidity_2m_avg = daily.relative_humidity_2m_max.map(
+            (max: number, index: number) => {
+              const min = daily.relative_humidity_2m_min[index];
+              return Math.round((max + min) / 2);
+            }
+          );
+          state.daily = {
+            ...daily,
+            relative_humidity_2m_avg,
+          };
+        }
       })
       .addCase(fetchWeather.rejected, (state, action) => {
         state.loading = false;
