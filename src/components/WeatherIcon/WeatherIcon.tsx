@@ -1,8 +1,3 @@
-type WeatherIconProps = {
-  iconId: string;
-  size?: number;
-};
-
 export const WeatherIcon = ({ iconId }: { iconId: string }) => {
   return (
     <svg width="120" height="120">
