@@ -48,4 +48,9 @@ body {
   padding: 0;
   overflow-x: hidden;
   font-family: "Roboto", sans-serif;
+  background-image: linear-gradient(rgba(0, 128, 255, 0.2), rgba(0, 14, 28, 0.2)), url('/bgImage.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+

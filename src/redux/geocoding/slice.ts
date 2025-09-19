@@ -21,7 +21,14 @@ const initialState: WeatherByCityState = {
 const weatherByCitySlice = createSlice({
   name: "weatherByCity",
   initialState,
-  reducers: {},
+  reducers: {
+    clearState(state) {
+      state.coordinates = null;
+      state.cityName = null;
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchWeatherByCity.pending, (state) => {
@@ -46,4 +53,6 @@ const weatherByCitySlice = createSlice({
   },
 });
 
+export const { clearState } = weatherByCitySlice.actions;
 export default weatherByCitySlice.reducer;
+

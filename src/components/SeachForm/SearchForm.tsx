@@ -12,17 +12,29 @@ const SearchForm = () => {
   const navigate = useNavigate();
 
   const [city, setCity] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setCity(event.target.value);
+    setError(null); 
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (city != "") {
-      dispatch(fetchWeatherByCity(city));
-    } else {
-      console.log("Enter some city!");
+
+    if (city.trim() === "") {
+      setError("Please enter city name");
+      return;
+    }
+
+    try {
+      const result = await dispatch(fetchWeatherByCity(city)).unwrap();
+
+      if (!result || !result.latitude || !result.longitude) {
+        setError("Please enter true name of city");
+      }
+    } catch (e) {
+      setError("Please enter true name of city");
     }
   };
 
@@ -33,7 +45,7 @@ const SearchForm = () => {
   }, [coord, navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-600">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4 pr-[50px] pl-[50px]">
       <form
         onSubmit={handleSubmit}
         className="flex w-full mx-10 rounded bg-white"
@@ -43,11 +55,11 @@ const SearchForm = () => {
           type="text"
           value={city}
           onChange={handleChange}
-          placeholder="Search weather"
+          placeholder="Search city"
         />
         <button
           type="submit"
-          className="m-2 rounded bg-blue-600 px-4 py-2 text-white"
+          className="m-2 rounded bg-gray-800 px-4 py-2 text-white hover:bg-gray-500"
         >
           <svg
             className="fill-current h-6 w-6"
@@ -64,8 +76,13 @@ const SearchForm = () => {
           </svg>
         </button>
       </form>
+
+      {error && (
+        <p className="text-red-500 font-medium">{error}</p>
+      )}
     </div>
   );
 };
 
 export default SearchForm;
+
